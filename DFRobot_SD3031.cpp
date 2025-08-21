@@ -212,14 +212,16 @@ uint8_t DFRobot_SD3031::writeReg(uint8_t reg, void* pBuf, size_t size)
     DBG("pBuf ERROR!! : null pointer");
   }
   uint8_t * _pBuf = (uint8_t *)pBuf;
+  uint8_t readBuf[2];
+  readReg(SD3031_REG_CTR1, readBuf, 2);
   _pWire->beginTransmission(_deviceAddr);
-  _pWire->write(SD3031_REG_CTR2);//Write 1 to WRTC1
-  _pWire->write(0X80);
+  _pWire->write(SD3031_REG_CTR2);
+  _pWire->write(0X80&readBuf[1]);
   _pWire->endTransmission();
   delay(10);
   _pWire->beginTransmission(_deviceAddr);
-  _pWire->write(SD3031_REG_CTR1);//Write 1 to WRTC2 & WRTC3
-  _pWire->write(0xff);//Write 1 to WRTC2 & WRTC3
+  _pWire->write(SD3031_REG_CTR1);
+  _pWire->write(0x84&readBuf[0]);
   _pWire->endTransmission();
   delay(10);
   _pWire->beginTransmission(_deviceAddr);
@@ -230,13 +232,13 @@ uint8_t DFRobot_SD3031::writeReg(uint8_t reg, void* pBuf, size_t size)
   _pWire->endTransmission();
   delay(10);
   _pWire->beginTransmission(_deviceAddr);
-  _pWire->write(SD3031_REG_CTR1);//Write 0 to WRTC2 & WRTC3
-  _pWire->write(0x7B);
+  _pWire->write(SD3031_REG_CTR1);
+  _pWire->write(0x7B&readBuf[0]);
   _pWire->endTransmission();
   delay(10);
   _pWire->beginTransmission(_deviceAddr);
-  _pWire->write(SD3031_REG_CTR2);//Write 1 to WRTC1
-  _pWire->write(0X12);////Write 0 to WRTC1
+  _pWire->write(SD3031_REG_CTR2);
+  _pWire->write(0X7F&readBuf[1]);
   if( _pWire->endTransmission() != 0){
     return 1;
   }else{
