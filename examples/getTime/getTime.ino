@@ -21,7 +21,7 @@ void setup()
         delay(1000);
     }
     rtc.setHourSystem(rtc.e24hours);//Set display format
-    rtc.setTime(2021,7,27,14,59,0);//Initialize time
+    rtc.setTime(2026,7,27,14,59,0);//Initialize time
     // //Get internal temperature
     // Serial.print(rtc.getTemperatureC());
     // Serial.println(" C");
